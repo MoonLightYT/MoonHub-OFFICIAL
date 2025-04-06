@@ -14,14 +14,20 @@ local Tabs = {}
 Tabs.Main = Window:AddTab({
     Title = "Main",
     Icon = "Anchor"
+local Toggle = Tab:AddToggle("MyToggle", 
+{
+    Title = "Toggle", 
+    Description = "Toggle description",
+    Default = false
+    Callback = function(state)
+	if state then
+	    print("Toggle On")
+	else
+	    print("Toggle Off")
+        end
+    end 
 })
-
--- Add sections to Main tab
-local Section1 = Tabs.Main:AddSection("Welcome to MoonHub")
-
--- Add paragraph to a section
-Section1:AddParagraph({
-    Title = "This is where you can find various different functions!!!"
+})
 })
 
 -- Other tabs
