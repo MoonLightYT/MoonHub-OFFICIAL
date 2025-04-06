@@ -6,11 +6,15 @@ local Window = Fluent:CreateWindow({
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
     Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
+    MinimizeKey = Enum.KeyCode.LeftControl -- Used when there's no MinimizeKeybind
 })
 
 -- Fluent provides Lucide Icons, they are optional
-local Tabs = {
-    Main = Window:AddTab({ Title = "Main", Icon = "anchor" }),
-}
+local Tabs = {}
+Tabs.Main = Window:AddTab({
+    Title = "Main",
+    Icon = "Anchor"
+})
 
+-- Example: Add a section to the Main tab
+Tabs.Main:AddSection("Welcome to MoonHub")
