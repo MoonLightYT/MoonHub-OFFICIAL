@@ -15,21 +15,3 @@ Tabs.Main = Window:AddTab({
     Title = "Main",
     Icon = "Anchor"
 })
-
--- God Mode Toggle Logic
-local godModeToggle = false
-
-Tabs.Main:AddToggle("GodMode", {
-    Title = "God Mode Brawl",
-    Description = "INVINCIBLE",
-    Default = false,
-    Callback = function(state)
-        godModeToggle = state
-        print(state and "God Mode Enabled" or "God Mode Disabled")
-
-        if godModeToggle then
-            task.spawn(function()
-                while godModeToggle do
-                    game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
-                    task.wait(0.1) -- avoid crashing the client; adjust delay as needed
-                end
