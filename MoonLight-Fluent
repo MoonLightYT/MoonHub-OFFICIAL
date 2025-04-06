@@ -163,6 +163,3 @@ local CreditsTab = Window:AddTab({
 local Section = CreditsTab:AddSection("Co-devs")
 Section:AddLabel("Moonlight×Godlike")
 Section:AddLabel("Other Co-developers")
-
--- Finalizing the GUI
-Fluent:ToggleTransparency(false) and Fluent:ToggleTransparency(true)
