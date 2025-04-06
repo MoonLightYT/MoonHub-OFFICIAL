@@ -153,4 +153,4 @@ Tabs.AutoRebirth = Window:AddTab({
     Icon = "Codesandbox"
 })
 
-Fluent:ToggleTransparency(false) and Fluent:ToggleTransparency(true)
+local Section = Tab.Credits:AddSection("Co-devs")
