@@ -26,3 +26,7 @@ Tabs.Main:AddToggle("DestroyAdPortal", {
             print("Ad portal toggle ON")
             local part = workspace:FindFirstChild("RobloxForwardPortals")
             if part then
+
+Tabs.Main.AddToggle("Anti AFK", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/evxncodes/mainroblox/main/anti-afk", true))()
+end)
