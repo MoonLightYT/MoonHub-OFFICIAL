@@ -118,6 +118,25 @@ Tabs.Main:AddToggle("AntiLag", {
     end
 })
 
+-- Auto Join Brawl Toggle
+local autoJoinToggle = false
+Tabs.Main:AddToggle("AutoJoinBrawl", {
+    Title = "Auto Join Brawl",
+    Description = "Automatically join brawl events.",
+    Default = false,
+    Callback = function(state)
+        autoJoinToggle = state
+        if autoJoinToggle then
+            task.spawn(function()
+                while autoJoinToggle do
+                    game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
+                    task.wait(2)
+                end
+            end)
+        end
+    end
+})
+
 -- Other Tabs
 Tabs.AutoWeight = Window:AddTab({
     Title = "Auto Weight",
@@ -133,30 +152,3 @@ Tabs.AutoRebirth = Window:AddTab({
     Title = "Auto Rebirth",
     Icon = "Codesandbox"
 })
-
-
-local Toggle = Tab:AddToggle("Auto Join brawl", 
-{
-    Title = "Toggle", 
-    Description = "Says it in the name💀🙏",
-    Default = false
-    Callback = function(state)
-	if state then
-	    print("Toggle On")
-	else
-	    print("Toggle Off")
-        end
-    end 
-})
-
-Tabs.Main:AddTogglesautoJoinToggle = State
-    if State then
-        task.spawn(function()
-            while autoJoinToggle do
-                game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
-                task.wait(2)
-            end
-        end)
-    end
-end)
-
