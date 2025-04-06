@@ -9,39 +9,31 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.LeftControl
 })
 
--- Fluent provides Lucide Icons, they are optional
+-- Tabs Setup
 local Tabs = {}
 Tabs.Main = Window:AddTab({
     Title = "Main",
     Icon = "Anchor"
-local Section = Tab:AddSection("Welcome to MoonHub")
-local Section = Tab:AddSection("Section Name")
-Section:AddParagraph({
-    Title = "This is where you can find various different functions!!!"
-})
 })
 
+-- Add sections to Main tab
+local Section1 = Tabs.Main:AddSection("Welcome to MoonHub")
+local Section2 = Tabs.Main:AddSection("Section Name")
+
+-- Add paragraph to a section
+Section2:AddParagraph({
+    Title = "This is where you can find various different functions!!!"
+})
+
+-- Other tabs
 Tabs.AutoWeight = Window:AddTab({
     Title = "Auto Weight",
-    Icon = "muscle"
+    Icon = "Muscle"
 })
 
 Tabs.TPGyms = Window:AddTab({
     Title = "TP Gyms",
-    Icon = "clock"
+    Icon = "Clock"
 })
 
-Tabs.AutoRebirth = Window:AddTab({
-    Title = "Auto Rebirth",
-    Icon = "codesandbox"
-})
-
-Tabs.AutoKill = Window:AddTab({
-    Title = "Auto Kill",
-    Icon = "utensils-crossed"
-})
-
-Tabs.Credits = Window:AddTab({
-    Title = "Credits",
-    Icon = "badge-check"
-})
+Tabs.AutoRebirth
