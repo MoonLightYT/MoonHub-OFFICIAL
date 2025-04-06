@@ -133,3 +133,30 @@ Tabs.AutoRebirth = Window:AddTab({
     Title = "Auto Rebirth",
     Icon = "Codesandbox"
 })
+
+
+local Toggle = Tab:AddToggle("Auto Join brawl", 
+{
+    Title = "Toggle", 
+    Description = "Says it in the name💀🙏",
+    Default = false
+    Callback = function(state)
+	if state then
+	    print("Toggle On")
+	else
+	    print("Toggle Off")
+        end
+    end 
+})
+
+Tabs.Main:AddTogglesautoJoinToggle = State
+    if State then
+        task.spawn(function()
+            while autoJoinToggle do
+                game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
+                task.wait(2)
+            end
+        end)
+    end
+end)
+
