@@ -16,18 +16,7 @@ Tabs.Main = Window:AddTab({
     Icon = "Anchor"
 })
 
--- Add Toggle to Main tab
-local Toggle = Tabs.Main:AddToggle("Anti Lag", {
-    Title = "Toggle",
-    Description = "This reduces the Lag",
-    Default = false,
-    Callback = function(state)
-        if state then
-            print("Toggle On")
-        else
-            print("Toggle Off")
-        end
-    end
+-- State and logic for Anti-Lag
 local isAntiLagEnabled = false
 local function setAntiLag(value)
     isAntiLagEnabled = value
@@ -37,6 +26,16 @@ local function setAntiLag(value)
         notify("Anti-Lag Disabled", "The script will return to normal performance.", 3)
     end
 end
+
+-- Add Toggle to Main tab
+local Toggle = Tabs.Main:AddToggle("AntiLag", {
+    Title = "Anti Lag",
+    Description = "This reduces the Lag",
+    Default = false,
+    Callback = function(state)
+        print(state and "Toggle On" or "Toggle Off")
+        setAntiLag(state)
+    end
 })
 
 -- Other tabs
