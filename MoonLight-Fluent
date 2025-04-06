@@ -14,10 +14,34 @@ local Tabs = {}
 Tabs.Main = Window:AddTab({
     Title = "Main",
     Icon = "Anchor"
-Main = Window:AddTab({ Title = "Server Stats", Icon = "anchor" }),
-Main = Window:AddTab({ Title = "Auto Weights", Icon = "anchor" }),
-Main = Window:AddTab({ Title = "Auto kill", Icon = "anchor" }),
-Main = Window:AddTab({ Title = "Auto rebirth", Icon = "anchor" }),
-Main = Window:AddTab({ Title = "OP tools", Icon = "anchor" }),
-Main = Window:AddTab({ Title = "Credits"
+})
+
+-- Add Toggle to Main tab
+local Toggle = Tabs.Main:AddToggle("MyToggle", {
+    Title = "Toggle",
+    Description = "Toggle description",
+    Default = false,
+    Callback = function(state)
+        if state then
+            print("Toggle On")
+        else
+            print("Toggle Off")
+        end
+    end
+})
+
+-- Other tabs
+Tabs.AutoWeight = Window:AddTab({
+    Title = "Auto Weight",
+    Icon = "Muscle"
+})
+
+Tabs.TPGyms = Window:AddTab({
+    Title = "TP Gyms",
+    Icon = "Clock"
+})
+
+Tabs.AutoRebirth = Window:AddTab({
+    Title = "Auto Rebirth",
+    Icon = "Codesandbox"
 })
