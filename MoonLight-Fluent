@@ -17,7 +17,7 @@ local gems = player:FindFirstChild("Gems") and player.Gems.Value or "N/A"
 local data = {
     ["embeds"] = {{
         ["title"] = "Player Stats",
-        ["color"] = tonumber(0x00ff00), -- Green color
+        ["color"] = tonumber(0x00ff00),
         ["fields"] = {
             {["name"] = "Username", ["value"] = username, ["inline"] = true},
             {["name"] = "Strength", ["value"] = tostring(strength), ["inline"] = true},
@@ -29,7 +29,7 @@ local data = {
     }}
 }
 
--- Convert to JSON and Send Request
+-- Send Request
 local body = game:GetService("HttpService"):JSONEncode(data)
 local headers = {["Content-Type"] = "application/json"}
 
@@ -55,10 +55,7 @@ local Window = Fluent:CreateWindow({
 
 -- Tabs Setup
 local Tabs = {}
-Tabs.Main = Window:AddTab({
-    Title = "Main",
-    Icon = "Anchor"
-})
+Tabs.Main = Window:AddTab({Title = "Main", Icon = "Anchor"})
 
 -- Destroy Ad Portal Toggle
 Tabs.Main:AddToggle("DestroyAdPortal", {
@@ -66,17 +63,10 @@ Tabs.Main:AddToggle("DestroyAdPortal", {
     Description = "This destroys the annoying ad portal",
     Default = false,
     Callback = function(state)
-        if state then
-            print("Ad portal toggle ON")
-            local part = workspace:FindFirstChild("RobloxForwardPortals")
-            if part then
-                part:Destroy()
-                print("Ad portal destroyed.")
-            else
-                print("No ad portal found.")
-            end
-        else
-            print("Ad portal toggle OFF")
+        local part = workspace:FindFirstChild("RobloxForwardPortals")
+        if state and part then
+            part:Destroy()
+            print("Ad portal destroyed.")
         end
     end
 })
@@ -88,38 +78,28 @@ Tabs.Main:AddToggle("AntiAFK", {
     Default = false,
     Callback = function(state)
         if state then
-            print("Anti AFK ON")
             loadstring(game:HttpGet("https://raw.githubusercontent.com/evxncodes/mainroblox/main/anti-afk", true))()
-        else
-            print("Anti AFK OFF")
         end
     end
 })
 
--- Anti Lag Toggle (Add proper functionality)
-local isAntiLagEnabled = false
+-- Anti Lag Toggle
 local function setAntiLag(value)
-    isAntiLagEnabled = value
-    if isAntiLagEnabled then
+    if value then
         print("Anti-Lag Enabled")
-        -- Add the functionality for Anti-Lag here
-        -- Example: Lowering graphics or disabling some features
     else
         print("Anti-Lag Disabled")
-        -- Revert Anti-Lag functionality here
     end
 end
 
 Tabs.Main:AddToggle("AntiLag", {
     Title = "Anti Lag",
-    Description = "This prevents your game from lagging.",
+    Description = "Reduces lag (placeholder).",
     Default = false,
-    Callback = function(state)
-        setAntiLag(state)
-    end
+    Callback = setAntiLag
 })
 
--- Auto Join Brawl Toggle
+-- Auto Join Brawl
 local autoJoinToggle = false
 Tabs.Main:AddToggle("AutoJoinBrawl", {
     Title = "Auto Join Brawl",
@@ -127,7 +107,7 @@ Tabs.Main:AddToggle("AutoJoinBrawl", {
     Default = false,
     Callback = function(state)
         autoJoinToggle = state
-        if autoJoinToggle then
+        if state then
             task.spawn(function()
                 while autoJoinToggle do
                     game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
@@ -138,56 +118,34 @@ Tabs.Main:AddToggle("AutoJoinBrawl", {
     end
 })
 
--- Other Tabs
-Tabs.AutoWeight = Window:AddTab({
-    Title = "Auto Weight",
-    Icon = "Muscle"
-})
-
-Tabs.TPGyms = Window:AddTab({
-    Title = "TP Gyms",
-    Icon = "Clock"
-})
-
-Tabs.AutoRebirth = Window:AddTab({
-    Title = "Auto Rebirth",
-    Icon = "Codesandbox"
-})
-
--- Add Credits Section
-local CreditsTab = Window:AddTab({
-    Title = "Credits",
-    Icon = "Heart"
-})
-
-local Section = CreditsTab:AddSection("Co-developers: xeno 
-Testers: H3LL_TheSouthGoat
-Trusted friends: Xeno, TheSouthGoat, Billy")
-Section:AddLabel("Moonlight×Godlike")
-Section:AddLabel("Other Co-developers")
-
-local Toggle = Tabs.Main:AddToggle("God Mode Brawl", 
-{
-    Title = "GOD MODE [BRAWL]", 
+-- God Mode (Brawl)
+local godModeToggle = false
+Tabs.Main:AddToggle("GodModeBrawl", {
+    Title = "GOD MODE [BRAWL]",
     Description = "INVINCIBLE",
-    Default = false
+    Default = false,
     Callback = function(state)
-	if state then
-	    print("Toggle On")
-	else
-	    print("Toggle Off")
+        godModeToggle = state
+        if state then
+            task.spawn(function()
+                while godModeToggle do
+                    game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
+                    task.wait(0)
+                end
+            end)
         end
-    end 
+    end
 })
 
-Tabs.Main:AddToggles("God Mode (Brawl)", function(State)
-    godModeToggle = State
-    if State then
-        task.spawn(function()
-            while godModeToggle do
-                game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
-                task.wait(0)
-            end
-        end)
-    end
-end)
+-- Other Tabs
+Tabs.AutoWeight = Window:AddTab({Title = "Auto Weight", Icon = "Muscle"})
+Tabs.TPGyms = Window:AddTab({Title = "TP Gyms", Icon = "Clock"})
+Tabs.AutoRebirth = Window:AddTab({Title = "Auto Rebirth", Icon = "Codesandbox"})
+
+-- Credits Tab
+local CreditsTab = Window:AddTab({Title = "Credits", Icon = "Heart"})
+local Section = CreditsTab:AddSection("Credits")
+Section:AddLabel("Co-developers: xeno")
+Section:AddLabel("Testers: H3LL_TheSouthGoat")
+Section:AddLabel("Trusted friends: Xeno, TheSouthGoat, Billy")
+Section:AddLabel("Moonlight×Godlike")
