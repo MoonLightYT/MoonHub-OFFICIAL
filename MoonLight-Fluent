@@ -26,7 +26,44 @@ Tabs.Main:AddToggle("DestroyAdPortal", {
             print("Ad portal toggle ON")
             local part = workspace:FindFirstChild("RobloxForwardPortals")
             if part then
+                part:Destroy()
+                print("Ad portal destroyed.")
+            else
+                print("No ad portal found.")
+            end
+        else
+            print("Ad portal toggle OFF")
+        end
+    end
+})
 
-Tabs.Main.AddToggle("Anti AFK", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/evxncodes/mainroblox/main/anti-afk", true))()
-end)
+-- Anti AFK Toggle
+Tabs.Main:AddToggle("AntiAFK", {
+    Title = "Anti AFK",
+    Description = "Prevents the game from kicking you for being idle",
+    Default = false,
+    Callback = function(state)
+        if state then
+            print("Anti AFK ON")
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/evxncodes/mainroblox/main/anti-afk", true))()
+        else
+            print("Anti AFK OFF")
+        end
+    end
+})
+
+-- Other tabs
+Tabs.AutoWeight = Window:AddTab({
+    Title = "Auto Weight",
+    Icon = "Muscle"
+})
+
+Tabs.TPGyms = Window:AddTab({
+    Title = "TP Gyms",
+    Icon = "Clock"
+})
+
+Tabs.AutoRebirth = Window:AddTab({
+    Title = "Auto Rebirth",
+    Icon = "Codesandbox"
+})
