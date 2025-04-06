@@ -14,20 +14,20 @@ local Tabs = {}
 Tabs.Main = Window:AddTab({
     Title = "Main",
     Icon = "Anchor"
-local Toggle = Tab:AddToggle("MyToggle", 
-{
-    Title = "Toggle", 
+})
+
+-- Add Toggle to Main tab
+local Toggle = Tabs.Main:AddToggle("MyToggle", {
+    Title = "Toggle",
     Description = "Toggle description",
-    Default = false
+    Default = false,
     Callback = function(state)
-	if state then
-	    print("Toggle On")
-	else
-	    print("Toggle Off")
+        if state then
+            print("Toggle On")
+        else
+            print("Toggle Off")
         end
-    end 
-})
-})
+    end
 })
 
 -- Other tabs
@@ -41,4 +41,7 @@ Tabs.TPGyms = Window:AddTab({
     Icon = "Clock"
 })
 
-Tabs.AutoRebirth
+Tabs.AutoRebirth = Window:AddTab({
+    Title = "Auto Rebirth",
+    Icon = "Codesandbox"
+})
