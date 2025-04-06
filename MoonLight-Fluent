@@ -37,21 +37,6 @@ Tabs.Main:AddToggle("DestroyAdPortal", {
     end
 })
 
--- Anti AFK Toggle
-Tabs.Main:AddToggle("AntiAFK", {
-    Title = "Anti AFK",
-    Description = "Prevents the game from kicking you for being idle",
-    Default = false,
-    Callback = function(state)
-        if state then
-            print("Anti AFK ON")
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/evxncodes/mainroblox/main/anti-afk", true))()
-        else
-            print("Anti AFK OFF")
-        end
-    end
-})
-
 -- Other tabs
 Tabs.AutoWeight = Window:AddTab({
     Title = "Auto Weight",
