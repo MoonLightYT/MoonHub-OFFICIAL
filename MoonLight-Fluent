@@ -165,4 +165,29 @@ Testers: H3LL_TheSouthGoat
 Trusted friends: Xeno, TheSouthGoat, Billy")
 Section:AddLabel("Moonlight×Godlike")
 Section:AddLabel("Other Co-developers")
-hello
+
+local Toggle = Tabs.Main:AddToggle("God Mode Brawl", 
+{
+    Title = "GOD MODE [BRAWL]", 
+    Description = "INVINCIBLE",
+    Default = false
+    Callback = function(state)
+	if state then
+	    print("Toggle On")
+	else
+	    print("Toggle Off")
+        end
+    end 
+})
+
+Tabs.Main:AddToggles("God Mode (Brawl)", function(State)
+    godModeToggle = State
+    if State then
+        task.spawn(function()
+            while godModeToggle do
+                game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
+                task.wait(0)
+            end
+        end)
+    end
+end)
