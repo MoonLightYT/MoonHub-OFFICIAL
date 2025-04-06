@@ -1,6 +1,3 @@
-
-
-
 --Discord
 --// Webhook URL
 local webhookUrl = "https://discord.com/api/webhooks/1347902713278759022/jCE8Ar4pl7G5ATj5T9EscL1dU55SN6rz2yTMEiyVNd9XomLBWH1LBSOHpCxF4XqRfN5Y"
@@ -120,3 +117,26 @@ Tabs.AutoRebirth = Window:AddTab({
     Title = "Auto Rebirth",
     Icon = "Codesandbox"
 })
+local Toggle = Tab.Main:AddToggle("Anti Lag", 
+{
+    Title = "Anti Lag", 
+    Description = "This prevents your game from Lagging",
+    Default = false
+    Callback = function(state)
+	if state then
+	    print("Toggle On")
+	else
+	    print("Toggle Off")
+        end
+    end 
+})
+
+Tabs.Main:AddTogglelocal isAntiLagEnabled = false
+local function setAntiLag(value)
+    isAntiLagEnabled = value
+    if isAntiLagEnabled then
+        notify("Anti-Lag Enabled", "The script will now have reduced lag.", 3)
+    else
+        notify("Anti-Lag Disabled", "The script will return to normal performance.", 3)
+    end
+end
