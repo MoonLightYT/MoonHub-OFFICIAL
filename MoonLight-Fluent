@@ -49,26 +49,25 @@ elseif syn and syn.request then
     syn.request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
 end
 
-  
-  local Library = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-  local Window = Fluent:CreateWindow({
-    Title = "MoonLight [Fluent]" .. Fluent.Version,
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local Window = Fluent:CreateWindow({
+    Title = "MoonLight" .. Fluent.Version,
     SubTitle = "by Moonlight×Godlike",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
-    Theme = "Dark",
+    Theme = "Black",
     MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
 })
-  -- Fluent provides Lucide Icons, they are optional
+-- Fluent provides Lucide Icons, they are optional
 local Tabs = {
     Main = Window:AddTab({ Title = "Main", Icon = "badge-check" }),
-    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+    Settings = Window:AddTab({ Title = "rebirths", Icon = "robot" })
 }
-local Toggle = Tab:AddToggle("Main", 
+local Toggle = Tab:AddToggle("MyToggle", 
 {
-    Title = "Anti Lag", 
-    Description = "Reduces Lag",
+    Title = "Auto Rebirth Constant", 
+    Description = "Rebirth endlessly",
     Default = false
     Callback = function(state)
 	if state then
