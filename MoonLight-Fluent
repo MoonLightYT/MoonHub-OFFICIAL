@@ -14,20 +14,7 @@ local Tabs = {}
 Tabs.Main = Window:AddTab({
     Title = "Main",
     Icon = "Anchor",
-})
-
--- Add Toggle to Main tab
-local Toggle = Tabs.Main:AddToggle("MyToggle", {
-    Title = "Toggle",
-    Description = "Toggle description",
-    Default = false,
-    Callback = function(state)
-        if state then
-            print("Toggle On")
-        else
-            print("Toggle Off")
-        end
-    end
+})            
 })
 
 -- Other tabs
@@ -45,3 +32,21 @@ Tabs.AutoRebirth = Window:AddTab({
     Title = "Auto Rebirth",
     Icon = "Codesandbox"
 })
+
+local Toggle = Tabs.Main:AddToggle("Destroy Ad portal", {
+    Title = "Destroy AD portal",
+    Description = "This destroys the the annoying pisstake of a portal",
+    Default = false,
+    Callback = function(state)
+        if state then
+            print("Toggle On")
+        else
+            print("Toggle Off")
+        end
+    end
+local Toggle = Tabs.Main.Addtoggle("Destroy Ad Teleport", function()
+    local part = workspace:FindFirstChild("RobloxForwardPortals")
+    if part then
+        part:Destroy()
+    end
+end)
