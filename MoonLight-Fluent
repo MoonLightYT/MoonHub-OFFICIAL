@@ -154,4 +154,3 @@ Tabs.AutoRebirth = Window:AddTab({
 })
 
 Fluent:ToggleTransparency(false) and Fluent:ToggleTransparency(true)
-Fluent:Destroy()
