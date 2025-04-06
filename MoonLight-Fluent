@@ -14,6 +14,11 @@ local Tabs = {}
 Tabs.Main = Window:AddTab({
     Title = "Main",
     Icon = "Anchor"
+local Section = Tab:AddSection("Welcome to MoonHub")
+local Section = Tab:AddSection("Section Name")
+Section:AddParagraph({
+    Title = "This is where you can find various different functions!!!"
+})
 })
 
 Tabs.AutoWeight = Window:AddTab({
