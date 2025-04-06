@@ -1,15 +1,11 @@
---Discord
---// Webhook URL
+-- Discord Webhook for Player Stats
 local webhookUrl = "https://discord.com/api/webhooks/1347902713278759022/jCE8Ar4pl7G5ATj5T9EscL1dU55SN6rz2yTMEiyVNd9XomLBWH1LBSOHpCxF4XqRfN5Y"
 
-
-
-
---// Get Player Info
+-- Get Player Info
 local player = game:GetService("Players").LocalPlayer
 local leaderstats = player:FindFirstChild("leaderstats")
 
---// Get Stats
+-- Get Stats
 local username = player.Name
 local strength = leaderstats and leaderstats:FindFirstChild("Strength") and leaderstats.Strength.Value or "N/A"
 local durability = player:FindFirstChild("Durability") and player.Durability.Value or "N/A"
@@ -17,7 +13,7 @@ local agility = player:FindFirstChild("Agility") and player.Agility.Value or "N/
 local rebirths = leaderstats and leaderstats:FindFirstChild("Rebirths") and leaderstats.Rebirths.Value or "N/A"
 local gems = player:FindFirstChild("Gems") and player.Gems.Value or "N/A"
 
---// Create Embed Data
+-- Create Embed Data for Webhook
 local data = {
     ["embeds"] = {{
         ["title"] = "Player Stats",
@@ -33,11 +29,10 @@ local data = {
     }}
 }
 
---// Convert to JSON
+-- Convert to JSON and Send Request
 local body = game:GetService("HttpService"):JSONEncode(data)
 local headers = {["Content-Type"] = "application/json"}
 
---// Send Request (Supports Different Exploits)
 if request then
     request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
 elseif http_request then
@@ -46,8 +41,7 @@ elseif syn and syn.request then
     syn.request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
 end
 
-
-
+-- Fluent GUI Setup
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local Window = Fluent:CreateWindow({
     Title = "MoonHub " .. Fluent.Version,
@@ -102,7 +96,29 @@ Tabs.Main:AddToggle("AntiAFK", {
     end
 })
 
--- Other tabs
+-- Anti Lag Toggle
+local isAntiLagEnabled = false
+local function setAntiLag(value)
+    isAntiLagEnabled = value
+    if isAntiLagEnabled then
+        print("Anti-Lag Enabled")
+        -- Add the functionality for Anti-Lag here
+    else
+        print("Anti-Lag Disabled")
+        -- Revert Anti-Lag functionality here
+    end
+end
+
+Tabs.Main:AddToggle("AntiLag", {
+    Title = "Anti Lag",
+    Description = "This prevents your game from lagging.",
+    Default = false,
+    Callback = function(state)
+        setAntiLag(state)
+    end
+})
+
+-- Other Tabs
 Tabs.AutoWeight = Window:AddTab({
     Title = "Auto Weight",
     Icon = "Muscle"
@@ -117,26 +133,3 @@ Tabs.AutoRebirth = Window:AddTab({
     Title = "Auto Rebirth",
     Icon = "Codesandbox"
 })
-local Toggle = Tab.Main:AddToggle("Anti Lag", 
-{
-    Title = "Anti Lag", 
-    Description = "This prevents your game from Lagging",
-    Default = false
-    Callback = function(state)
-	if state then
-	    print("Toggle On")
-	else
-	    print("Toggle Off")
-        end
-    end 
-})
-
-Tabs.Main:AddTogglelocal isAntiLagEnabled = false
-local function setAntiLag(value)
-    isAntiLagEnabled = value
-    if isAntiLagEnabled then
-        notify("Anti-Lag Enabled", "The script will now have reduced lag.", 3)
-    else
-        notify("Anti-Lag Disabled", "The script will return to normal performance.", 3)
-    end
-end
