@@ -96,13 +96,14 @@ Tabs.Main:AddToggle("AntiAFK", {
     end
 })
 
--- Anti Lag Toggle
+-- Anti Lag Toggle (Add proper functionality)
 local isAntiLagEnabled = false
 local function setAntiLag(value)
     isAntiLagEnabled = value
     if isAntiLagEnabled then
         print("Anti-Lag Enabled")
         -- Add the functionality for Anti-Lag here
+        -- Example: Lowering graphics or disabling some features
     else
         print("Anti-Lag Disabled")
         -- Revert Anti-Lag functionality here
@@ -153,4 +154,16 @@ Tabs.AutoRebirth = Window:AddTab({
     Icon = "Codesandbox"
 })
 
-local Section = Tab.Credits:AddSection("Co-devs")
+-- Add Credits Section
+local CreditsTab = Window:AddTab({
+    Title = "Credits",
+    Icon = "Heart"
+})
+
+local Section = CreditsTab:AddSection("Co-devs")
+Section:AddLabel("Moonlight×Godlike")
+Section:AddLabel("Other Co-developers")
+
+-- Finalizing the GUI
+Fluent:ToggleTransparency(false) and Fluent:ToggleTransparency(true)
+Fluent:Destroy()
