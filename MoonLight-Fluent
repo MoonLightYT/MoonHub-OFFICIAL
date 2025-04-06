@@ -13,8 +13,28 @@ local Window = Fluent:CreateWindow({
 local Tabs = {}
 Tabs.Main = Window:AddTab({
     Title = "Main",
-    Icon = "Anchor",
-})            
+    Icon = "Anchor"
+})
+
+-- Destroy Ad Portal Toggle
+Tabs.Main:AddToggle("DestroyAdPortal", {
+    Title = "Destroy AD portal",
+    Description = "This destroys the annoying ad portal",
+    Default = false,
+    Callback = function(state)
+        if state then
+            print("Ad portal toggle ON")
+            local part = workspace:FindFirstChild("RobloxForwardPortals")
+            if part then
+                part:Destroy()
+                print("Ad portal destroyed.")
+            else
+                print("No ad portal found.")
+            end
+        else
+            print("Ad portal toggle OFF")
+        end
+    end
 })
 
 -- Other tabs
@@ -32,21 +52,3 @@ Tabs.AutoRebirth = Window:AddTab({
     Title = "Auto Rebirth",
     Icon = "Codesandbox"
 })
-
-local Toggle = Tabs.Main:AddToggle("Destroy Ad portal", {
-    Title = "Destroy AD portal",
-    Description = "This destroys the the annoying pisstake of a portal",
-    Default = false,
-    Callback = function(state)
-        if state then
-            print("Toggle On")
-        else
-            print("Toggle Off")
-        end
-    end
-local Toggle = Tabs.Main.Addtoggle("Destroy Ad Teleport", function()
-    local part = workspace:FindFirstChild("RobloxForwardPortals")
-    if part then
-        part:Destroy()
-    end
-end)
