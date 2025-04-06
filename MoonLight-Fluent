@@ -15,7 +15,7 @@ local Tabs = {
     Main = Window:AddTab({ Title = "Auto Weight", Icon = "clock" }),
     Main = Window:AddTab({ Title = "TP Gyms", Icon = "cog" }),
     Main = Window:AddTab({ Title = "Auto Rebirth, Icon = "codesandbox" }),
-    Main = Window:AddTab({ Title = "Auto Kill", Icon = "untensils-crossed" }),
+    Main = Window:AddTab({ Title = "Auto Kill", Icon = "utensils-crossed" }),
     Main = Window:AddTab({ Title = "OP tools", Icon = "circle-alert" }),
     Main = Window:AddTab({ Title = "Credits", Icon = "badge-check" }),
 }
