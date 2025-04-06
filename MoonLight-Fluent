@@ -18,10 +18,9 @@ Tabs.Main = Window:AddTab({
 
 -- Add sections to Main tab
 local Section1 = Tabs.Main:AddSection("Welcome to MoonHub")
-local Section2 = Tabs.Main:AddSection("Section Name")
 
 -- Add paragraph to a section
-Section2:AddParagraph({
+Section1:AddParagraph({
     Title = "This is where you can find various different functions!!!"
 })
 
