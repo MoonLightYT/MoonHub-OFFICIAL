@@ -51,33 +51,6 @@ end
 
 
 
-
--- Whitelist for specific usernames 
-local whitelistedUsers = {
-   "Roblox users ",  --whitelisted u can and more
-
-}
-
--- Function to check if player is whitelisted
-local function isWhitelisted(username)
-   for _, whitelisted in ipairs(whitelistedUsers) do
-       if username == whitelisted then
-           return true
-       end
-   end
-   return false
-end
-
--- Get the local player's username
-local player = game.Players.LocalPlayer
-local username = player.Name
-
--- Kick the player if they are not whitelisted
-if not isWhitelisted(username) then
-   game.Players.LocalPlayer:Kick("Not WhiteListed L")
-   return
-else
-  
   local Library = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
   local Window = Fluent:CreateWindow({
     Title = "MoonLight [Fluent]" .. Fluent.Version,
