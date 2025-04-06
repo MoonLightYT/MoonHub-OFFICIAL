@@ -49,8 +49,7 @@ elseif syn and syn.request then
     syn.request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
 end
 
-
-
+  
   local Library = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
   local Window = Fluent:CreateWindow({
     Title = "MoonLight [Fluent]" .. Fluent.Version,
@@ -66,20 +65,16 @@ local Tabs = {
     Main = Window:AddTab({ Title = "Main", Icon = "badge-check" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
-Tab:AddButton({
-    Title = "Main",
-    Description = "List of misc functions",
-    Callback = function()
-        print("GODLIKE")
-    end
+local Toggle = Tab:AddToggle("Main", 
+{
+    Title = "Anti Lag", 
+    Description = "Reduces Lag",
+    Default = false
+    Callback = function(state)
+	if state then
+	    print("Toggle On")
+	else
+	    print("Toggle Off")
+        end
+    end 
 })
-local isAntiLagEnabled = false
-local function setAntiLag(value)
-    isAntiLagEnabled = value
-    if isAntiLagEnabled then
-        notify("Anti-Lag Enabled", "The script will now have reduced lag.", 3)
-    else
-        notify("Anti-Lag Disabled", "The script will return to normal performance.", 3)
-    end
-end
-    
