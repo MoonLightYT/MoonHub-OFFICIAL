@@ -160,6 +160,8 @@ local CreditsTab = Window:AddTab({
     Icon = "Heart"
 })
 
-local Section = CreditsTab:AddSection("Co-devs")
+local Section = CreditsTab:AddSection("Co-developers: xeno 
+Testers: H3LL_TheSouthGoat
+Trusted friends: Xeno, TheSouthGoat, Billy")
 Section:AddLabel("Moonlight×Godlike")
 Section:AddLabel("Other Co-developers")
