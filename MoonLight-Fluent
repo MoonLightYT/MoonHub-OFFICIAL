@@ -64,16 +64,4 @@ local Tabs = {
     Main = Window:AddTab({ Title = "Main", Icon = "badge-check" }),
     Settings = Window:AddTab({ Title = "rebirths", Icon = "robot" })
 }
-local Toggle = Tab:AddToggle("MyToggle", 
-{
-    Title = "Auto Rebirth Constant", 
-    Description = "Rebirth endlessly",
-    Default = false
-    Callback = function(state)
-	if state then
-	    print("Toggle On")
-	else
-	    print("Toggle Off")
-        end
-    end 
-})
+    
