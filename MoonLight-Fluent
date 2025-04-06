@@ -8,8 +8,8 @@ local leaderstats = player:FindFirstChild("leaderstats")
 -- Get Stats
 local username = player.Name
 local strength = leaderstats and leaderstats:FindFirstChild("Strength") and leaderstats.Strength.Value or "N/A"
-local durability = player:FindFirstChild("Durability") and player.Durability.Value or "N/A"
-local agility = player:FindFirstChild("Agility") and player.Agility.Value or "N/A"
+local durability = leaderstats and leaderstats:FindFirstChild("Durability") and leaderstats.Durability.Value or "N/A"
+local agility = leaderstats and leaderstats:FindFirstChild("Agility") and leaderstats.Agility.Value or "N/A"
 local rebirths = leaderstats and leaderstats:FindFirstChild("Rebirths") and leaderstats.Rebirths.Value or "N/A"
 local gems = player:FindFirstChild("Gems") and player.Gems.Value or "N/A"
 
@@ -33,12 +33,12 @@ local data = {
 local body = game:GetService("HttpService"):JSONEncode(data)
 local headers = {["Content-Type"] = "application/json"}
 
-if request then
-    request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
-elseif http_request then
+if http_request then
     http_request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
 elseif syn and syn.request then
     syn.request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
+else
+    warn("No HTTP request method found!")
 end
 
 -- Fluent GUI Setup
@@ -152,5 +152,6 @@ Tabs.AutoRebirth = Window:AddTab({
     Title = "Auto Rebirth",
     Icon = "Codesandbox"
 })
+
 Fluent:ToggleTransparency(false) and Fluent:ToggleTransparency(true)
 Fluent:Destroy()
