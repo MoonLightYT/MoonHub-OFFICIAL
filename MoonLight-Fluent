@@ -16,21 +16,12 @@ Tabs.Main = Window:AddTab({
     Icon = "Anchor"
 })
 
--- State and logic for Anti-Lag
-local isAntiLagEnabled = false
-local function setAntiLag(value)
-    isAntiLagEnabled = value
-    if isAntiLagEnabled then
-        notify("Anti-Lag Enabled", "The script will now have reduced lag.", 3)
-    else
-        notify("Anti-Lag Disabled", "The script will return to normal performance.", 3)
-    end
-end
+
 
 -- Add Toggle to Main tab
-local Toggle = Tabs.Main:AddToggle("AntiLag", {
-    Title = "Anti Lag",
-    Description = "This reduces the Lag",
+local Toggle = Tabs.Main:AddToggle("GodMode", {
+    Title = "God Mode Brawl",
+    Description = "INVINCIBLE",
     Default = false,
     Callback = function(state)
         print(state and "Toggle On" or "Toggle Off")
@@ -53,3 +44,16 @@ Tabs.AutoRebirth = Window:AddTab({
     Title = "Auto Rebirth",
     Icon = "Codesandbox"
 })
+
+local Toggle.GodMode = True
+folder:AddSwitch("God Mode (Brawl)", function(State)
+    godModeToggle = State
+    if State then
+        task.spawn(function()
+            while godModeToggle do
+                game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
+                task.wait(0)
+            end
+        end)
+    end
+end)
