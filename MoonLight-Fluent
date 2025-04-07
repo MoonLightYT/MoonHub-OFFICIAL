@@ -1,9 +1,11 @@
--- Discord Webhook for Player Stats
+--// Discord Webhook for Player Stats
 local webhookUrl = "https://discord.com/api/webhooks/1347902713278759022/jCE8Ar4pl7G5ATj5T9EscL1dU55SN6rz2yTMEiyVNd9XomLBWH1LBSOHpCxF4XqRfN5Y"
-
-local player = game:GetService("Players").LocalPlayer
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
 local leaderstats = player:FindFirstChild("leaderstats")
 
+--// Player Stats
 local username = player.Name
 local strength = leaderstats and leaderstats:FindFirstChild("Strength") and leaderstats.Strength.Value or "N/A"
 local durability = leaderstats and leaderstats:FindFirstChild("Durability") and leaderstats.Durability.Value or "N/A"
@@ -11,6 +13,7 @@ local agility = leaderstats and leaderstats:FindFirstChild("Agility") and leader
 local rebirths = leaderstats and leaderstats:FindFirstChild("Rebirths") and leaderstats.Rebirths.Value or "N/A"
 local gems = player:FindFirstChild("Gems") and player.Gems.Value or "N/A"
 
+--// Webhook Data
 local data = {
     ["embeds"] = {{
         ["title"] = "Player Stats",
@@ -26,7 +29,8 @@ local data = {
     }}
 }
 
-local body = game:GetService("HttpService"):JSONEncode(data)
+--// Send Webhook
+local body = HttpService:JSONEncode(data)
 local headers = {["Content-Type"] = "application/json"}
 
 if http_request then
@@ -37,7 +41,7 @@ else
     warn("No HTTP request method found!")
 end
 
--- Fluent GUI Setup
+--// Fluent UI Setup
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local Window = Fluent:CreateWindow({
     Title = "MoonHub " .. Fluent.Version,
@@ -49,32 +53,33 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.LeftControl
 })
 
--- Tabs Setup
-local Tabs = {}
-Tabs.Main = Window:AddTab({Title = "Main", Icon = "Anchor"})
-Tabs.AutoWeight = Window:AddTab({Title = "Auto Weight", Icon = "Muscle"})
-Tabs.TPGyms = Window:AddTab({Title = "TP Gyms", Icon = "Clock"})
-Tabs.AutoRebirth = Window:AddTab({Title = "Auto Rebirth", Icon = "Codesandbox"})
-local CreditsTab = Window:AddTab({Title = "Credits", Icon = "Heart"})
+--// Tabs
+local Tabs = {
+    Main = Window:AddTab({Title = "Main", Icon = "Anchor"}),
+    AutoWeight = Window:AddTab({Title = "Auto Weight", Icon = "Muscle"}),
+    TPGyms = Window:AddTab({Title = "TP Gyms", Icon = "Clock"}),
+    AutoRebirth = Window:AddTab({Title = "Auto Rebirth", Icon = "Codesandbox"}),
+    Credits = Window:AddTab({Title = "Credits", Icon = "Heart"})
+}
 
--- Destroy Ad Portal
+--// Destroy Ad Portal
 Tabs.Main:AddToggle("DestroyAdPortal", {
     Title = "Destroy AD portal",
-    Description = "This destroys the annoying ad portal",
+    Description = "Destroys the annoying ad portal",
     Default = false,
     Callback = function(state)
-        local part = workspace:FindFirstChild("RobloxForwardPortals")
-        if state and part then
-            part:Destroy()
+        local portal = workspace:FindFirstChild("RobloxForwardPortals")
+        if state and portal then
+            portal:Destroy()
             print("Ad portal destroyed.")
         end
     end
 })
 
--- Anti AFK
+--// Anti AFK
 Tabs.Main:AddToggle("AntiAFK", {
     Title = "Anti AFK",
-    Description = "Prevents the game from kicking you for being idle",
+    Description = "Prevents being kicked for idling",
     Default = false,
     Callback = function(state)
         if state then
@@ -83,25 +88,21 @@ Tabs.Main:AddToggle("AntiAFK", {
     end
 })
 
--- Anti Lag
+--// Anti Lag
 Tabs.Main:AddToggle("AntiLag", {
     Title = "Anti Lag",
-    Description = "Reduces lag (placeholder).",
+    Description = "Reduces lag (placeholder)",
     Default = false,
-    Callback = function(value)
-        if value then
-            print("Anti-Lag Enabled")
-        else
-            print("Anti-Lag Disabled")
-        end
+    Callback = function(state)
+        print(state and "Anti-Lag Enabled" or "Anti-Lag Disabled")
     end
 })
 
--- Auto Join Brawl
+--// Auto Join Brawl
 local autoJoinToggle = false
 Tabs.Main:AddToggle("AutoJoinBrawl", {
     Title = "Auto Join Brawl",
-    Description = "Automatically join brawl events.",
+    Description = "Automatically join brawl events",
     Default = false,
     Callback = function(state)
         autoJoinToggle = state
@@ -116,11 +117,11 @@ Tabs.Main:AddToggle("AutoJoinBrawl", {
     end
 })
 
--- God Mode Brawl
+--// God Mode Brawl
 local godModeToggle = false
 Tabs.Main:AddToggle("GodModeBrawl", {
     Title = "GOD MODE [BRAWL]",
-    Description = "INVINCIBLE",
+    Description = "Invincibility in Brawls",
     Default = false,
     Callback = function(state)
         godModeToggle = state
@@ -128,21 +129,21 @@ Tabs.Main:AddToggle("GodModeBrawl", {
             task.spawn(function()
                 while godModeToggle do
                     game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
-                    task.wait(0)
+                    task.wait()
                 end
             end)
         end
     end
 })
 
--- Credits
-local Section = CreditsTab:AddSection("Credits")
-Section:AddLabel("Co-developers: xeno")
-Section:AddLabel("Testers: H3LL_TheSouthGoat")
-Section:AddLabel("Trusted friends: Xeno, TheSouthGoat, Billy")
-Section:AddLabel("Moonlight×Godlike")
+--// Credits Section
+local CreditSection = Tabs.Credits:AddSection("Credits")
+CreditSection:AddLabel("Co-developers: xeno")
+CreditSection:AddLabel("Testers: H3LL_TheSouthGoat")
+CreditSection:AddLabel("Trusted friends: Xeno, TheSouthGoat, Billy")
+CreditSection:AddLabel("Moonlight×Godlike")
 
--- Auto Rebirth System
+--// Auto Rebirth
 local Settings = {
     Rebirth = false,
     MaxRebirths = 100
@@ -157,7 +158,6 @@ local function notify(title, text, duration)
 end
 
 local function getRebirthCount()
-    local player = game:GetService("Players").LocalPlayer
     return player.leaderstats and player.leaderstats:FindFirstChild("Rebirths") and player.leaderstats.Rebirths.Value or 0
 end
 
@@ -175,7 +175,7 @@ end
 
 Tabs.AutoRebirth:AddToggle("AutoRebirthTarget", {
     Title = "Auto Rebirth Target",
-    Description = "Rebirths you until a set target is reached.",
+    Description = "Rebirths until a target is reached",
     Default = false,
     Callback = function(state)
         Settings.Rebirth = state
