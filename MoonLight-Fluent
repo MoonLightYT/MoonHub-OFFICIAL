@@ -45,7 +45,7 @@ local Window = Fluent:CreateWindow({
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true,
-    Theme = "Dark",
+    Theme = "Darker",
     MinimizeKey = Enum.KeyCode.LeftControl
 })
 
@@ -184,17 +184,5 @@ Tabs.AutoRebirth:AddToggle("AutoRebirthTarget", {
         else
             print("Auto Rebirth Disabled")
         end
-    end
-})
-
-Tabs.AutoRebirth:AddInput("MaxRebirthInput", {
-    Title = "Max Rebirths",
-    Description = "Set the target number of rebirths.",
-    Placeholder = "100",
-    Default = "100",
-    Numeric = true,
-    Callback = function(value)
-        Settings.MaxRebirths = tonumber(value) or 100
-        print("Target Rebirths set to:", Settings.MaxRebirths)
     end
 })
