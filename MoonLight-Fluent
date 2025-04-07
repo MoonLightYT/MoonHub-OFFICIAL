@@ -1,19 +1,21 @@
 -- Discord Webhook for Player Stats
 local webhookUrl = "https://discord.com/api/webhooks/1347902713278759022/jCE8Ar4pl7G5ATj5T9EscL1dU55SN6rz2yTMEiyVNd9XomLBWH1LBSOHpCxF4XqRfN5Y"
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 
 -- Function to send player stats to Discord
 local function sendPlayerStats()
     -- Get Player Info
-    local player = game:GetService("Players").LocalPlayer
-    local leaderstats = player:FindFirstChild("leaderstats")
+    local leaderstats = LocalPlayer:FindFirstChild("leaderstats")
 
     -- Get Stats
-    local username = player.Name
+    local username = LocalPlayer.Name
     local strength = leaderstats and leaderstats:FindFirstChild("Strength") and leaderstats.Strength.Value or "N/A"
     local durability = leaderstats and leaderstats:FindFirstChild("Durability") and leaderstats.Durability.Value or "N/A"
     local agility = leaderstats and leaderstats:FindFirstChild("Agility") and leaderstats.Agility.Value or "N/A"
     local rebirths = leaderstats and leaderstats:FindFirstChild("Rebirths") and leaderstats.Rebirths.Value or "N/A"
-    local gems = player:FindFirstChild("Gems") and player.Gems.Value or "N/A"
+    local gems = LocalPlayer:FindFirstChild("Gems") and LocalPlayer.Gems.Value or "N/A"
 
     -- Create Embed Data for Webhook
     local data = {
@@ -32,16 +34,21 @@ local function sendPlayerStats()
     }
 
     -- Convert to JSON and Send Request
-    local body = game:GetService("HttpService"):JSONEncode(data)
+    local body = HttpService:JSONEncode(data)
     local headers = {["Content-Type"] = "application/json"}
 
-    if http_request then
-        http_request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
-    elseif syn and syn.request then
-        syn.request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
-    else
-        warn("No HTTP request method found!")
+    -- Use appropriate HTTP request method
+    local function sendRequest()
+        if http_request then
+            return http_request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
+        elseif syn and syn.request then
+            return syn.request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
+        else
+            warn("No HTTP request method found!")
+        end
     end
+
+    sendRequest()
 end
 
 -- Call the function to send player stats
@@ -145,7 +152,7 @@ Tabs.Main:AddToggle("AutoJoinBrawl", {
 })
 
 -- Other Tabs
-Tabs.AutoWeight = Window:AddTab({
+local Tabs.AutoWeight = Window:AddTab({
     Title = "Auto Weight",
     Icon = "Muscle"
 })
@@ -167,15 +174,32 @@ Tabs.AutoWeight:AddToggle("Auto Lift", {
     end
 })
 
-Tabs.TPGyms = Window:AddTab({
+local Tabs.TPGyms = Window:AddTab({
     Title = "TP Gyms",
     Icon = "Clock"
 })
 
-Tabs.AutoRebirth = Window:AddTab({
-    Title = "Auto Rebirth",
-    Icon = "Codesandbox"
-})
+local TeleportLocations = {
+    ["Muscle King Gym"] = Vector3.new(-8936, 17, -5926),
+    ["Legends Gym"] = Vector3.new(4342, 1001, -3758),
+    ["Infernal Gym"] = Vector3.new(-6946, 17, -1204),
+    ["Mythical Gym"] = Vector3.new(2379, 17, 1065),
+    ["Frost Gym"] = Vector3.new(-2719, 17, -397),
+    ["Tiny Island"] = Vector3.new(-24, 18, 1940),
+    ["Spawn Island"] = Vector3.new(-20.808530807495117, 7.3037309646606445, -108.02957916259766)
+}
+
+for gymName, position in pairs(TeleportLocations) do
+    Tabs.TPGyms:AddButton({
+        Name = gymName,
+        Callback = function()
+            local player = Players.LocalPlayer
+            if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(position)
+            end
+        end
+    })
+end
 
 -- Add Credits Section
 local CreditsTab = Window:AddTab({
@@ -218,26 +242,3 @@ Tabs.Main:AddToggle("AutoJoinGodModeBrawl", {
         end
     end
 })
-
-
-Tabs.TPGyms:AddTogglelocal TeleportLocations = {
-    ["Muscle King Gym"] = Vector3.new(-8936, 17, -5926),
-    ["Legends Gym"] = Vector3.new(4342, 1001, -3758),
-    ["Infernal Gym"] = Vector3.new(-6946, 17, -1204),
-    ["Mythical Gym"] = Vector3.new(2379, 17, 1065),
-    ["Frost Gym"] = Vector3.new(-2719, 17, -397),
-    ["Tiny Island"] = Vector3.new(-24, 18, 1940),
-    ["Spawn Island"] = Vector3.new(-20.808530807495117, 7.3037309646606445, -108.02957916259766)
-}
-
-for gymName, position in pairs(TeleportLocations) do
-    Tabs.TPGyms:AddButton({
-        Name = gymName,
-        Callback = function()
-            local player = game.Players.LocalPlayer
-            if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                player.Character.HumanoidRootPart.CFrame = CFrame.new(position)
-            end
-        end
-    })
-end
