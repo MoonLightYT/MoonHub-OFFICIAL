@@ -147,40 +147,16 @@ CreditSection:AddLabel("Testers: H3LL_TheSouthGoat")
 CreditSection:AddLabel("Trusted friends: Xeno, TheSouthGoat, Billy")
 CreditSection:AddLabel("Moonlight×Godlike")
 
---// Auto Rebirth System
-local Settings = {
-    Rebirth = false,
-    MaxRebirths = 1000 -- set your desired cap here
-}
-
-local function getRebirthCount()
-    local stats = player:FindFirstChild("leaderstats")
-    return stats and stats:FindFirstChild("Rebirths") and stats.Rebirths.Value or 0
-end
-
-local function autoRebirthLoop()
-    while Settings.Rebirth do
-        task.wait(0.1)
-        local currentRebirths = getRebirthCount()
-
-        if currentRebirths >= Settings.MaxRebirths then
-            Settings.Rebirth = false
-            print("Auto Rebirth: Max reached, stopping.")
-            break
-        end
-
-        game:GetService("ReplicatedStorage").rEvents.rebirthRemote:InvokeServer("rebirthRequest")
-    end
-end
-
-Tabs.AutoRebirth:AddToggle("AutoRebirth", {
-    Title = "Auto Rebirth",
-    Description = "Automatically rebirths up to a max",
-    Default = false,
+local Toggle = Tab.AutoRebirth:AddToggle("Auto Rebirth Target", 
+{
+    Title = "Auto Target Rebirth", 
+    Description = "Rebirths you to a desired point",
+    Default = false
     Callback = function(state)
-        Settings.Rebirth = state
-        if state then
-            autoRebirthLoop()
+	if state then
+	    print("Toggle On")
+	else
+	    print("Toggle Off")
         end
-    end
+    end 
 })
