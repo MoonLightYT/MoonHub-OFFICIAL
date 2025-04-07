@@ -63,6 +63,7 @@ local Tabs = {
     AutoWeight = Window:AddTab({Title = "Auto Weight", Icon = "Muscle"}),
     TPGyms = Window:AddTab({Title = "TP Gyms", Icon = "Clock"}),
     AutoRebirth = Window:AddTab({Title = "Auto Rebirth", Icon = "Codesandbox"}),
+    AutoKill = Window:AddTab({Title = "Auto Kill", Icon = "utensils-crossed"})
     Credits = Window:AddTab({Title = "Credits", Icon = "Heart"})
 }
 
@@ -147,16 +148,5 @@ CreditSection:AddLabel("Testers: H3LL_TheSouthGoat")
 CreditSection:AddLabel("Trusted friends: Xeno, TheSouthGoat, Billy")
 CreditSection:AddLabel("Moonlight×Godlike")
 
---// Auto Weight Toggle (Fixed & properly assigned to tab)
-Tabs.AutoWeight:AddToggle("AutoWeightToggle", {
-    Title = "Auto Weight",
-    Description = "Explains it in the name -_-",
-    Default = false,
-    Callback = function(state)
-        if state then
-            print("Auto Weight: ON")
-        else
-            print("Auto Weight: OFF")
-        end
-    end
-})
+
+
