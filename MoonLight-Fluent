@@ -164,7 +164,7 @@ local Toggle = Tab:AddToggle("Auto Rebirth Target",
     end 
 })
 
-Tabs.Auto Rebirths:AddTogglelocal function getRebirthCount()
+Tabs.AutoRebirths:AddToggleAuto Rebirths:AddTogglelocal function getRebirthCount()
     return game:GetService("Players").LocalPlayer.leaderstats.Rebirths.Value
 end
 
