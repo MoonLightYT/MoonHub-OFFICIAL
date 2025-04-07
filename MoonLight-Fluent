@@ -147,46 +147,16 @@ CreditSection:AddLabel("Testers: H3LL_TheSouthGoat")
 CreditSection:AddLabel("Trusted friends: Xeno, TheSouthGoat, Billy")
 CreditSection:AddLabel("Moonlight×Godlike")
 
---// Auto Rebirth Logic
-local Settings = {
-    Rebirth = false,
-    MaxRebirths = 100 -- Change this to your target rebirth count
-}
-
-local function notify(title, text, duration)
-    Fluent:Notify({
-        Title = title,
-        Content = text,
-        Duration = duration or 5
-    })
-end
-
-local function getRebirthCount()
-    return player.leaderstats and player.leaderstats:FindFirstChild("Rebirths") and player.leaderstats.Rebirths.Value or 0
-end
-
-local function autoRebirthLoop()
-    while Settings.Rebirth do
-        task.wait(0.1)
-        local currentRebirths = getRebirthCount()
-        if currentRebirths >= Settings.MaxRebirths then
-            Settings.Rebirth = false
-            notify("Auto Rebirth", "Target rebirths reached. Auto Rebirth turned off.", 5)
-            break
-        end
-        game:GetService("ReplicatedStorage").rEvents.rebirthRemote:InvokeServer("rebirthRequest")
-    end
-end
-
---// Auto Rebirth Toggle
-Tabs.AutoRebirth:AddToggle("AutoRebirthToggle", {
-    Title = "Auto Rebirth",
-    Description = "Automatically rebirths to a target amount",
-    Default = false,
+local Toggle = Tab.AutoRebirth:AddToggle("Auto Rebirth", 
+{
+    Title = "Auto Rebirth", 
+    Description = "Rebirths u",
+    Default = false
     Callback = function(state)
-        Settings.Rebirth = state
-        if state then
-            autoRebirthLoop()
+	if state then
+	    print("Toggle On")
+	else
+	    print("Toggle Off")
         end
-    end
+    end 
 })
