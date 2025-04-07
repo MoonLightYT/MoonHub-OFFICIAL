@@ -63,7 +63,7 @@ local Tabs = {
     AutoWeight = Window:AddTab({Title = "Auto Weight", Icon = "Muscle"}),
     TPGyms = Window:AddTab({Title = "TP Gyms", Icon = "Clock"}),
     AutoRebirth = Window:AddTab({Title = "Auto Rebirth", Icon = "Codesandbox"}),
-    AutoKill = Window:AddTab({Title = "Auto Kill", Icon = "utensils-crossed"})
+    AutoKill = Window:AddTab({Title = "Auto Kill", Icon = "utensils-crossed"}),
     Credits = Window:AddTab({Title = "Credits", Icon = "Heart"})
 }
 
@@ -147,6 +147,3 @@ CreditSection:AddLabel("Co-developers: xeno")
 CreditSection:AddLabel("Testers: H3LL_TheSouthGoat")
 CreditSection:AddLabel("Trusted friends: Xeno, TheSouthGoat, Billy")
 CreditSection:AddLabel("Moonlight×Godlike")
-
-
-
