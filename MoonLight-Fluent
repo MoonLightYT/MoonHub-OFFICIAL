@@ -180,13 +180,13 @@ local Tabs.TPGyms = Window:AddTab({
 })
 
 local TeleportLocations = {
-    Tabs.TPGyms:AddButton["Muscle King Gym"] = Vector3.new(-8936, 17, -5926),
+    ["Muscle King Gym"] = Vector3.new(-8936, 17, -5926),
     ["Legends Gym"] = Vector3.new(4342, 1001, -3758),
     ["Infernal Gym"] = Vector3.new(-6946, 17, -1204),
     ["Mythical Gym"] = Vector3.new(2379, 17, 1065),
     ["Frost Gym"] = Vector3.new(-2719, 17, -397),
     ["Tiny Island"] = Vector3.new(-24, 18, 1940),
-    ["Spawn Island"] = Vector3.new(-20.808530807495117, 7.3037309646606445, -108.02957916259766)
+    ["Spawn Island"] = Vector3.new(-20.81, 7.30, -108.03)
 }
 
 for gymName, position in pairs(TeleportLocations) do
