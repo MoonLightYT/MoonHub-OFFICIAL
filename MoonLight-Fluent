@@ -149,3 +149,37 @@ Section:AddLabel("Co-developers: xeno")
 Section:AddLabel("Testers: H3LL_TheSouthGoat")
 Section:AddLabel("Trusted friends: Xeno, TheSouthGoat, Billy")
 Section:AddLabel("Moonlight×Godlike")
+
+local Toggle = Tab:AddToggle("Auto Rebirth Target", 
+{
+    Title = "Auto Rebirth Target", 
+    Description = "Rebirths you until a certain point",
+    Default = false
+    Callback = function(state)
+	if state then
+	    print("Toggle On")
+	else
+	    print("Toggle Off")
+        end
+    end 
+})
+
+Tabs.Auto Rebirths:AddTogglelocal function getRebirthCount()
+    return game:GetService("Players").LocalPlayer.leaderstats.Rebirths.Value
+end
+
+local function autoRebirthLoop()
+    while Settings.Rebirth do
+        wait(0.1)
+        local currentRebirths = getRebirthCount()
+
+        if currentRebirths >= Settings.MaxRebirths then
+            Settings.Rebirth = false
+            notify("Auto Rebirth", "Target rebirths reached. Auto Rebirth turned off.", 5)
+            break
+        end
+
+        -- Rebirth logic
+        game:GetService("ReplicatedStorage").rEvents.rebirthRemote:InvokeServer("rebirthRequest")
+    end
+end
