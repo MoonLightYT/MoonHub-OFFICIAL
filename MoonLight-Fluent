@@ -212,3 +212,22 @@ Tabs.Main:AddToggle("AutoJoinGodModeBrawl", {
         end
     end
 })
+
+-- Fluent provides Lucide Icons, they are optional
+local Tabs = {
+    Main = Window:AddTab({ Misc/Connected scripts = "Misc", Icon = "robots" }),
+}
+Main.Misc:AddButton({
+    Name = "Inf Yield",
+    Callback = function()
+        local success, err = pcall(function()
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+        end)
+        if not success then
+            notify("Error", "Failed to load Inf Yield.", 5)
+        end
+    end
+
+
+
+
