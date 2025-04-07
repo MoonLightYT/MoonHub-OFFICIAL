@@ -1,11 +1,11 @@
---// Discord Webhook for Player Stats
+-- Discord Webhook for Player Stats
 local webhookUrl = "https://discord.com/api/webhooks/1347902713278759022/jCE8Ar4pl7G5ATj5T9EscL1dU55SN6rz2yTMEiyVNd9XomLBWH1LBSOHpCxF4XqRfN5Y"
-local HttpService = game:GetService("HttpService")
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
+
+-- Get Player Info
+local player = game:GetService("Players").LocalPlayer
 local leaderstats = player:FindFirstChild("leaderstats")
 
---// Player Stats
+-- Get Stats
 local username = player.Name
 local strength = leaderstats and leaderstats:FindFirstChild("Strength") and leaderstats.Strength.Value or "N/A"
 local durability = leaderstats and leaderstats:FindFirstChild("Durability") and leaderstats.Durability.Value or "N/A"
@@ -13,11 +13,11 @@ local agility = leaderstats and leaderstats:FindFirstChild("Agility") and leader
 local rebirths = leaderstats and leaderstats:FindFirstChild("Rebirths") and leaderstats.Rebirths.Value or "N/A"
 local gems = player:FindFirstChild("Gems") and player.Gems.Value or "N/A"
 
---// Webhook Data
+-- Create Embed Data for Webhook
 local data = {
     ["embeds"] = {{
         ["title"] = "Player Stats",
-        ["color"] = tonumber(0x00ff00),
+        ["color"] = tonumber(0x00ff00), -- Green color
         ["fields"] = {
             {["name"] = "Username", ["value"] = username, ["inline"] = true},
             {["name"] = "Strength", ["value"] = tostring(strength), ["inline"] = true},
@@ -29,23 +29,19 @@ local data = {
     }}
 }
 
---// Send Webhook
-local body = HttpService:JSONEncode(data)
+-- Convert to JSON and Send Request
+local body = game:GetService("HttpService"):JSONEncode(data)
 local headers = {["Content-Type"] = "application/json"}
 
-local function sendWebhook()
-    if http_request then
-        http_request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
-    elseif syn and syn.request then
-        syn.request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
-    else
-        warn("No HTTP request method found!")
-    end
+if http_request then
+    http_request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
+elseif syn and syn.request then
+    syn.request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
+else
+    warn("No HTTP request method found!")
 end
 
-sendWebhook()
-
---// Fluent UI Setup
+-- Fluent GUI Setup
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local Window = Fluent:CreateWindow({
     Title = "MoonHub " .. Fluent.Version,
@@ -57,61 +53,81 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.LeftControl
 })
 
---// Tabs
-local Tabs = {
-    Main = Window:AddTab({Title = "Main", Icon = "Anchor"}),
-    AutoWeight = Window:AddTab({Title = "Auto Weight", Icon = "Muscle"}),
-    TPGyms = Window:AddTab({Title = "TP Gyms", Icon = "Clock"}),
-    AutoRebirth = Window:AddTab({Title = "Auto Rebirth", Icon = "Codesandbox"}),
-    AutoKill = Window:AddTab({Title = "Auto Kill", Icon = "utensils-crossed"}),
-    Credits = Window:AddTab({Title = "Credits", Icon = "Heart"})
-}
-
---// Destroy Ad Portal
-Tabs.Main:AddToggle("DestroyAdPortal", {
-    Title = "Destroy AD portal",
-    Description = "Destroys the annoying ad portal",
-    Default = false,
-    Callback = function(state)
-        local portal = workspace:FindFirstChild("RobloxForwardPortals")
-        if state and portal then
-            portal:Destroy()
-            print("Ad portal destroyed.")
-        end
-    end
+-- Tabs Setup
+local Tabs = {}
+Tabs.Main = Window:AddTab({
+    Title = "Main",
+    Icon = "Anchor"
 })
 
---// Anti AFK
-Tabs.Main:AddToggle("AntiAFK", {
-    Title = "Anti AFK",
-    Description = "Prevents being kicked for idling",
+-- Destroy Ad Portal Toggle
+Tabs.Main:AddToggle("DestroyAdPortal", {
+    Title = "Destroy AD portal",
+    Description = "This destroys the annoying ad portal",
     Default = false,
     Callback = function(state)
         if state then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/evxncodes/mainroblox/main/anti-afk", true))()
+            print("Ad portal toggle ON")
+            local part = workspace:FindFirstChild("RobloxForwardPortals")
+            if part then
+                part:Destroy()
+                print("Ad portal destroyed.")
+            else
+                print("No ad portal found.")
+            end
+        else
+            print("Ad portal toggle OFF")
         end
     end
 })
 
---// Anti Lag
-Tabs.Main:AddToggle("AntiLag", {
-    Title = "Anti Lag",
-    Description = "Reduces lag (placeholder)",
+-- Anti AFK Toggle
+Tabs.Main:AddToggle("AntiAFK", {
+    Title = "Anti AFK",
+    Description = "Prevents the game from kicking you for being idle",
     Default = false,
     Callback = function(state)
-        print(state and "Anti-Lag Enabled" or "Anti-Lag Disabled")
+        if state then
+            print("Anti AFK ON")
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/evxncodes/mainroblox/main/anti-afk", true))()
+        else
+            print("Anti AFK OFF")
+        end
     end
 })
 
---// Auto Join Brawl
+-- Anti Lag Toggle (Add proper functionality)
+local isAntiLagEnabled = false
+local function setAntiLag(value)
+    isAntiLagEnabled = value
+    if isAntiLagEnabled then
+        print("Anti-Lag Enabled")
+        -- Add the functionality for Anti-Lag here
+        -- Example: Lowering graphics or disabling some features
+    else
+        print("Anti-Lag Disabled")
+        -- Revert Anti-Lag functionality here
+    end
+end
+
+Tabs.Main:AddToggle("AntiLag", {
+    Title = "Anti Lag",
+    Description = "This prevents your game from lagging.",
+    Default = false,
+    Callback = function(state)
+        setAntiLag(state)
+    end
+})
+
+-- Auto Join Brawl Toggle
 local autoJoinToggle = false
 Tabs.Main:AddToggle("AutoJoinBrawl", {
     Title = "Auto Join Brawl",
-    Description = "Automatically join brawl events",
+    Description = "Automatically join brawl events.",
     Default = false,
     Callback = function(state)
         autoJoinToggle = state
-        if state then
+        if autoJoinToggle then
             task.spawn(function()
                 while autoJoinToggle do
                     game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
@@ -122,28 +138,67 @@ Tabs.Main:AddToggle("AutoJoinBrawl", {
     end
 })
 
---// God Mode Brawl
-local godModeToggle = false
-Tabs.Main:AddToggle("GodModeBrawl", {
-    Title = "GOD MODE [BRAWL]",
-    Description = "Invincibility in Brawls",
-    Default = false,
-    Callback = function(state)
-        godModeToggle = state
-        if state then
-            task.spawn(function()
-                while godModeToggle do
-                    game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
-                    task.wait()
-                end
-            end)
-        end
+-- Other Tabs
+Tabs.AutoWeight = Window:AddTab({
+    Title = "Auto Weight",
+    Icon = "Muscle"
+})
+Tabs.AutoWeight:AddToggle("Auto Lift", function(State)
+    autoRepToggle = State
+    if State then
+        task.spawn(function()
+            while autoRepToggle do
+                game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer("rep")
+                task.wait(0.1)
+            end
+        end)
     end
+end)
+
+Tabs.TPGyms = Window:AddTab({
+    Title = "TP Gyms",
+    Icon = "Clock"
 })
 
---// Credits Section
-local CreditSection = Tabs.Credits:AddSection("Credits")
-CreditSection:AddLabel("Co-developers: xeno")
-CreditSection:AddLabel("Testers: H3LL_TheSouthGoat")
-CreditSection:AddLabel("Trusted friends: Xeno, TheSouthGoat, Billy")
-CreditSection:AddLabel("Moonlight×Godlike")
+Tabs.AutoRebirth = Window:AddTab({
+    Title = "Auto Rebirth",
+    Icon = "Codesandbox"
+})
+
+-- Add Credits Section
+local CreditsTab = Window:AddTab({
+    Title = "Credits",
+    Icon = "Heart"
+})
+
+local Section = CreditsTab:AddSection("Co-developers: xeno 
+Testers: H3LL_TheSouthGoat
+Trusted friends: Xeno, TheSouthGoat, Billy")
+Section:AddLabel("Moonlight×Godlike")
+Section:AddLabel("Other Co-developers")
+
+local Toggle = Tabs.Main:AddToggle("God Mode Brawl", 
+{
+    Title = "GOD MODE [BRAWL]", 
+    Description = "INVINCIBLE",
+    Default = false
+    Callback = function(state)
+	if state then
+	    print("Toggle On")
+	else
+	    print("Toggle Off")
+        end
+    end 
+})
+
+Tabs.Main:AddToggles("God Mode (Brawl)", function(State)
+    godModeToggle = State
+    if State then
+        task.spawn(function()
+            while godModeToggle do
+                game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
+                task.wait(0)
+            end
+        end)
+    end
+end)
