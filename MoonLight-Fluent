@@ -143,17 +143,23 @@ Tabs.AutoWeight = Window:AddTab({
     Title = "Auto Weight",
     Icon = "Muscle"
 })
-Tabs.AutoWeight:AddToggle("Auto Lift", function(State)
-    autoRepToggle = State
-    if State then
-        task.spawn(function()
-            while autoRepToggle do
-                game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer("rep")
-                task.wait(0.1)
-            end
-        end)
+
+Tabs.AutoWeight:AddToggle("Auto Lift", {
+    Title = "Auto Lift",
+    Description = "Automatically perform lifting action.",
+    Default = false,
+    Callback = function(state)
+        autoRepToggle = state
+        if state then
+            task.spawn(function()
+                while autoRepToggle do
+                    game:GetService("Players").LocalPlayer:WaitForChild("muscleEvent"):FireServer("rep")
+                    task.wait(0.1)
+                end
+            end)
+        end
     end
-end)
+})
 
 Tabs.TPGyms = Window:AddTab({
     Title = "TP Gyms",
@@ -171,34 +177,38 @@ local CreditsTab = Window:AddTab({
     Icon = "Heart"
 })
 
-local Section = CreditsTab:AddSection("Co-developers: xeno 
-Testers: H3LL_TheSouthGoat
-Trusted friends: Xeno, TheSouthGoat, Billy")
+local Section = CreditsTab:AddSection("Co-developers: xeno\nTesters: H3LL_TheSouthGoat\nTrusted friends: Xeno, TheSouthGoat, Billy")
 Section:AddLabel("Moonlight×Godlike")
 Section:AddLabel("Other Co-developers")
 
-local Toggle = Tabs.Main:AddToggle("God Mode Brawl", 
-{
-    Title = "GOD MODE [BRAWL]", 
+-- God Mode Brawl Toggle
+Tabs.Main:AddToggle("GodModeBrawl", {
+    Title = "GOD MODE [BRAWL]",
     Description = "INVINCIBLE",
-    Default = false
+    Default = false,
     Callback = function(state)
-	if state then
-	    print("Toggle On")
-	else
-	    print("Toggle Off")
+        if state then
+            print("God Mode Brawl ON")
+        else
+            print("God Mode Brawl OFF")
         end
-    end 
+    end
 })
 
-Tabs.Main:AddToggles("God Mode (Brawl)", function(State)
-    godModeToggle = State
-    if State then
-        task.spawn(function()
-            while godModeToggle do
-                game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
-                task.wait(0)
-            end
-        end)
+-- God Mode (Brawl) Auto Join Toggle
+Tabs.Main:AddToggle("AutoJoinGodModeBrawl", {
+    Title = "Auto Join God Mode Brawl",
+    Description = "Automatically join brawl events with God Mode.",
+    Default = false,
+    Callback = function(state)
+        godModeToggle = state
+        if state then
+            task.spawn(function()
+                while godModeToggle do
+                    game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
+                    task.wait(0)
+                end
+            end)
+        end
     end
-end)
+})
