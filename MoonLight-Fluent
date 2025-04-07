@@ -147,16 +147,16 @@ CreditSection:AddLabel("Testers: H3LL_TheSouthGoat")
 CreditSection:AddLabel("Trusted friends: Xeno, TheSouthGoat, Billy")
 CreditSection:AddLabel("Moonlight×Godlike")
 
-local Toggle = Tab.AutoRebirth:AddToggle("Auto Rebirth", 
-{
-    Title = "Auto Rebirth", 
-    Description = "Rebirths u",
-    Default = false
+--// Auto Rebirth Toggle (Fixed reference to Tabs, and added missing comma)
+Tabs.AutoRebirth:AddToggle("AutoRebirthToggle", {
+    Title = "Auto Rebirth",
+    Description = "Rebirths you to a desired point",
+    Default = false,
     Callback = function(state)
-	if state then
-	    print("Toggle On")
-	else
-	    print("Toggle Off")
+        if state then
+            print("Toggle On")
+        else
+            print("Toggle Off")
         end
-    end 
+    end
 })
