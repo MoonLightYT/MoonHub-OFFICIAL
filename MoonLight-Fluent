@@ -214,7 +214,7 @@ Tabs.Main:AddToggle("AutoJoinGodModeBrawl", {
 })
 
 -- Inf Yield Button
-Tabs.Main:AddButton({
+Tabs.Main:AddToggle({
     Name = "Inf Yield",
     Callback = function()
         local success, err = pcall(function()
