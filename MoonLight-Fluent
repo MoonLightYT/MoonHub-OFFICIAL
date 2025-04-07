@@ -219,15 +219,25 @@ Tabs.Main:AddToggle("AutoJoinGodModeBrawl", {
     end
 })
 
--- Inf Yield Button
-Tabs.Main:AddButton({
-    Title = "Inf Yield",
-    Callback = function()
-        local success, err = pcall(function()
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
-        end)
-        if not success then
-            warn("Failed to load Inf Yield. Error: " .. err)
+
+Tabs.TPGyms:AddTogglelocal TeleportLocations = {
+    ["Muscle King Gym"] = Vector3.new(-8936, 17, -5926),
+    ["Legends Gym"] = Vector3.new(4342, 1001, -3758),
+    ["Infernal Gym"] = Vector3.new(-6946, 17, -1204),
+    ["Mythical Gym"] = Vector3.new(2379, 17, 1065),
+    ["Frost Gym"] = Vector3.new(-2719, 17, -397),
+    ["Tiny Island"] = Vector3.new(-24, 18, 1940),
+    ["Spawn Island"] = Vector3.new(-20.808530807495117, 7.3037309646606445, -108.02957916259766)
+}
+
+for gymName, position in pairs(TeleportLocations) do
+    Tabs.TPGyms:AddButton({
+        Name = gymName,
+        Callback = function()
+            local player = game.Players.LocalPlayer
+            if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(position)
+            end
         end
-    end
-})
+    })
+end
