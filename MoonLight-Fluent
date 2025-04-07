@@ -96,7 +96,7 @@ Tabs.Main:AddToggle("AntiAFK", {
     end
 })
 
--- Anti Lag Toggle (Add proper functionality)
+-- Anti Lag Toggle
 local isAntiLagEnabled = false
 local function setAntiLag(value)
     isAntiLagEnabled = value
@@ -149,7 +149,7 @@ Tabs.AutoWeight:AddToggle("Auto Lift", {
     Description = "Automatically perform lifting action.",
     Default = false,
     Callback = function(state)
-        autoRepToggle = state
+        local autoRepToggle = state
         if state then
             task.spawn(function()
                 while autoRepToggle do
@@ -201,7 +201,7 @@ Tabs.Main:AddToggle("AutoJoinGodModeBrawl", {
     Description = "Automatically join brawl events with God Mode.",
     Default = false,
     Callback = function(state)
-        godModeToggle = state
+        local godModeToggle = state
         if state then
             task.spawn(function()
                 while godModeToggle do
@@ -213,21 +213,15 @@ Tabs.Main:AddToggle("AutoJoinGodModeBrawl", {
     end
 })
 
--- Fluent provides Lucide Icons, they are optional
-local Tabs = {
-    Main = Window:AddTab({ Misc/Connected scripts = "Misc", Icon = "robots" }),
-}
-Main.Misc:AddButton({
+-- Inf Yield Button
+Tabs.Main:AddButton({
     Name = "Inf Yield",
     Callback = function()
         local success, err = pcall(function()
             loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
         end)
         if not success then
-            notify("Error", "Failed to load Inf Yield.", 5)
+            warn("Failed to load Inf Yield. Error: " .. err)
         end
     end
-
-
-
-
+})
