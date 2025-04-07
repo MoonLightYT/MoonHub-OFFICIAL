@@ -143,46 +143,24 @@ CreditSection:AddLabel("Testers: H3LL_TheSouthGoat")
 CreditSection:AddLabel("Trusted friends: Xeno, TheSouthGoat, Billy")
 CreditSection:AddLabel("Moonlight×Godlike")
 
---// Auto Rebirth
-local Settings = {
-    Rebirth = false,
-    MaxRebirths = 100
-}
 
-local function notify(title, text, duration)
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = title,
-        Text = text,
-        Duration = duration or 5
-    })
-end
-
+Tabs.AutoRebirth:AddToggle(Auto Rebirth)
 local function getRebirthCount()
-    return player.leaderstats and player.leaderstats:FindFirstChild("Rebirths") and player.leaderstats.Rebirths.Value or 0
+    return game:GetService("Players").LocalPlayer.leaderstats.Rebirths.Value
 end
 
 local function autoRebirthLoop()
     while Settings.Rebirth do
-        task.wait(0.5)
-        if getRebirthCount() >= Settings.MaxRebirths then
+        wait(0.1)
+        local currentRebirths = getRebirthCount()
+
+        if currentRebirths >= Settings.MaxRebirths then
             Settings.Rebirth = false
             notify("Auto Rebirth", "Target rebirths reached. Auto Rebirth turned off.", 5)
             break
         end
+
+        -- Rebirth logic
         game:GetService("ReplicatedStorage").rEvents.rebirthRemote:InvokeServer("rebirthRequest")
     end
 end
-
-Tabs.AutoRebirth:AddToggle("AutoRebirthTarget", {
-    Title = "Auto Rebirth Target",
-    Description = "Rebirths until a target is reached",
-    Default = false,
-    Callback = function(state)
-        Settings.Rebirth = state
-        if state then
-            task.spawn(autoRebirthLoop)
-        else
-            print("Auto Rebirth Disabled")
-        end
-    end
-})
