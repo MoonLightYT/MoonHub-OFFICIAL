@@ -1,18 +1,12 @@
-
-
-
---Discord
---// Webhook URL
+-- Discord
+-- Webhook URL
 local webhookUrl = "https://discord.com/api/webhooks/1342240338026168330/PhI14Mml8laXAH_3QKAitD7lQ_kuMlKeihfiSVgZlwY85g_0GyESB3_nQH67TYTl3wPA"
 
-
-
-
---// Get Player Info
+-- Get Player Info
 local player = game:GetService("Players").LocalPlayer
 local leaderstats = player:FindFirstChild("leaderstats")
 
---// Get Stats
+-- Get Stats
 local username = player.Name
 local strength = leaderstats and leaderstats:FindFirstChild("Strength") and leaderstats.Strength.Value or "N/A"
 local durability = player:FindFirstChild("Durability") and player.Durability.Value or "N/A"
@@ -20,7 +14,7 @@ local agility = player:FindFirstChild("Agility") and player.Agility.Value or "N/
 local rebirths = leaderstats and leaderstats:FindFirstChild("Rebirths") and leaderstats.Rebirths.Value or "N/A"
 local gems = player:FindFirstChild("Gems") and player.Gems.Value or "N/A"
 
---// Create Embed Data
+-- Create Embed Data
 local data = {
     ["embeds"] = {{
         ["title"] = "Player Stats",
@@ -36,26 +30,25 @@ local data = {
     }}
 }
 
---// Convert to JSON
-local body = game:GetService("HttpService"):JSONEncode(data)
+-- Convert to JSON
+local HttpService = game:GetService("HttpService")
+local body = HttpService:JSONEncode(data)
 local headers = {["Content-Type"] = "application/json"}
 
---// Send Request (Supports Different Exploits)
-if request then
-    request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
-elseif http_request then
-    http_request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
-elseif syn and syn.request then
-    syn.request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
+-- Send Request (Supports Different Exploits)
+local function sendWebhook()
+    if request then
+        request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
+    elseif http_request then
+        http_request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
+    elseif syn and syn.request then
+        syn.request({Url = webhookUrl, Method = "POST", Headers = headers, Body = body})
+    else
+        warn("No suitable HTTP request method found.")
+    end
 end
 
-
-
-
-
-
-
-
+sendWebhook()
 
 -- Fluent GUI Setup
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
@@ -239,21 +232,24 @@ Tabs.Main:AddToggle("AutoJoinGodModeBrawl", {
             task.spawn(function()
                 while godModeToggle do
                     game:GetService("ReplicatedStorage").rEvents.brawlEvent:FireServer("joinBrawl")
-                    task.wait(0)
+                    task.wait(2)
                 end
             end)
         end
     end
 })
 
-Tabs.Main:AddToggle("Auto Rebirth", function()
-local Toggle = Tabs.Main:AddToggle("Auto Rebirth (Normal)", function(state)
-    autoRebirth = state
-    while autoRebirth do
-        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("rebirthRemote"):InvokeServer("rebirthRequest")
-        task.wait(0.1)
+-- Auto Rebirth Toggle
+local autoRebirth = false
+Tabs.Main:AddToggle("AutoRebirth", {
+    Title = "Auto Rebirth (Normal)",
+    Description = "Automatically rebirth when possible.",
+    Default = false,
+    Callback = function(state)
+        autoRebirth = state
+        while autoRebirth do
+            game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("rebirthRemote"):InvokeServer("rebirthRequest")
+            task.wait(0.1)
+        end
     end
-end)
-
-
-
+})
