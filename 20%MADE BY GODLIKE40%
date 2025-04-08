@@ -245,3 +245,15 @@ Tabs.Main:AddToggle("AutoJoinGodModeBrawl", {
         end
     end
 })
+
+Tabs.Main:AddToggle("Auto Rebirth", function()
+local Toggle = Tabs.Main:AddToggle("Auto Rebirth (Normal)", function(state)
+    autoRebirth = state
+    while autoRebirth do
+        game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("rebirthRemote"):InvokeServer("rebirthRequest")
+        task.wait(0.1)
+    end
+end)
+
+
+
